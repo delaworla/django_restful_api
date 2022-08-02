@@ -4,11 +4,13 @@ from rest_framework.response import Response
 from business.models import Customer
 from api.serializers import CustomerSerializer
 from rest_framework import status
+from django.http import Http404
 from functools import wraps
+from rest_framework.permissions import IsAuthenticated
 
 
 class CustomerView(APIView):
-
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, format=None):
         customers = Customer.published.all()
@@ -37,7 +39,7 @@ def resource_checker(model):
 
 
 class CustomerDetailView(APIView):
-
+    permission_classes = (IsAuthenticated,)
 
     @resource_checker(Customer)
     def get(self, request, pk, format=None):
@@ -53,7 +55,6 @@ class CustomerDetailView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     @resource_checker(Customer)
     def delete(self, request, pk, format=None):
         customer = Customer.published.get(pk=pk)
