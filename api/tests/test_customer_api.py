@@ -80,5 +80,7 @@ class CustomerDetailAPIViewTests(APITestCase):
         response = self.client.get(self.customer_url)
         self.assertEqual(response.status_code, 401)
 
-    
+    def test_delete_customer_authenticated(self):
+        response = self.client.delete(self.customer_url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
