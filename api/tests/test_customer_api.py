@@ -30,4 +30,9 @@ class CustomerAPIViewTests(APITestCase):
     def test_get_customers_authenticated(self):
         response = self.client.get(self.customers_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    def test_get_customers_un_authenticated(self):
+        self.client.force_authenticate(user=None, token=None)
+        response = self.client.get(self.customers_url)
+        self.assertEquals(response.status_code, 401)
 
