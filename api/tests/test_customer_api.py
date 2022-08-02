@@ -49,5 +49,29 @@ class CustomerAPIViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(len(response.data), 8)
 
-        
+class CustomerDetailAPIViewTests(APITestCase):
+    customer_url = reverse('customer-detail', args=[1])
+    customers_url = reverse("customer")
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='admin', password='admin')
+        self.token = Token.objects.create(user=self.user)
+        #self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+
+        # Saving a new customer
+        data = {
+            "title": "Mrs",
+            "first_name": "Celestina",
+            "last_name": "Danquah",
+            "gender": "F",
+            "status": "published"
+        }
+        response =self.client.post(self.customers_url, data, format='json')
+
+    def test_get_customer_autheticated(self):
+        response = self.client.get(self.customer_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['first_name'], 'Celestina')
 
