@@ -36,3 +36,18 @@ class CustomerAPIViewTests(APITestCase):
         response = self.client.get(self.customers_url)
         self.assertEquals(response.status_code, 401)
 
+
+    def test_post_customer_authenticated(self):
+        data = {
+            "title": "Mr",
+            "first_name": "Samuel",
+            "last_name": "Amenyeawu",
+            "gender": "M",
+            "status": "published"
+        }
+        response = self.client.post(self.customers_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(len(response.data), 8)
+
+        
+
