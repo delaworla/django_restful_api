@@ -60,7 +60,7 @@ class CustomerDetailAPIViewTests(APITestCase):
         #self.client = APIClient()
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
-        # Saving a new customer
+        # Saving a new customer in th database
         data = {
             "title": "Mrs",
             "first_name": "Celestina",
@@ -74,4 +74,11 @@ class CustomerDetailAPIViewTests(APITestCase):
         response = self.client.get(self.customer_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['first_name'], 'Celestina')
+
+    def test_get_customer_un_authenticated(self):
+        self.client.force_authenticate(user=None, token=None)
+        response = self.client.get(self.customer_url)
+        self.assertEqual(response.status_code, 401)
+
+    
 
