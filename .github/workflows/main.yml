@@ -36,11 +36,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       name: Checkout code for docker push
-    - uses: python-django-rest/docker-build-push@v5
+    - uses: restframework/docker-build-push@v5
       name: Build & push Docker image
       with:
         tags: latest
-        image: delaworla/python-django-rest
+        image: delaworla/restframework
         dockerfile: Dockerfile
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
